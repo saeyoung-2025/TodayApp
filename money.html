@@ -877,6 +877,12 @@
             document.getElementById('monthlyExpense').textContent = formatAmount(expense);
             document.getElementById('monthlyBalance').textContent = formatAmount(income - expense);
 
+            // Save monthly balance to localStorage for main page
+            localStorage.setItem('moneyMonthlyBalance', income - expense);
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'statsUpdate' }, '*');
+            }
+
             renderDailyExpenseChart(dailyExpenses);
         }
 
