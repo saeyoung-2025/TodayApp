@@ -529,7 +529,7 @@
         </div>
 
         <div class="balance-card">
-            <div class="balance-label">총 잔액</div>
+            <div class="balance-label" id="balanceLabel">올해 총 잔액</div>
             <div class="balance-value" id="currentBalance">0원</div>
         </div>
 
@@ -835,12 +835,17 @@
             }
         }
 
-        // Calculate Total Balance
+        // Calculate Yearly Balance (올해 총 잔액)
         async function calculateTotalBalance() {
             const allBudgets = await db.budgets.toArray();
+            const currentYear = new Date().getFullYear().toString();
+            
+            // Filter only current year data
+            const yearlyData = allBudgets.filter(entry => entry.date.startsWith(currentYear));
+            
             let income = 0, expense = 0;
 
-            allBudgets.forEach(entry => {
+            yearlyData.forEach(entry => {
                 if (entry.type === 'income') income += entry.amount;
                 else expense += entry.amount;
             });
